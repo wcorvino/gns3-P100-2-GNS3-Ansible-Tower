@@ -1,12 +1,11 @@
 ---
 - name: Backup show run (IOS) commands)
-  hosts: all
-  #gather_facts: false
+  hosts: R1,R2
   connection: local
   
   tasks:
    - name: run enable level commands
-     nxos_command:
+     ios_command:
        commands:
          - show run
          
