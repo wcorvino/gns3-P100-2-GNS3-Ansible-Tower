@@ -9,7 +9,14 @@
          - show run
      register: print_output
    -  debug: var=print_output.stdout_lines
+
+   - name: Print Working Directory
+     shell: pwd
+     register: current_working_directory
+   -  debug: var=current_working_directory.stdout
+
    - name: Go to the folder and execute command
-     command: chdir=~/../etc/ansible ls
+     shell: cd ~/../etc/ansible
+
    - name: save output to a file
      copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
