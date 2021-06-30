@@ -16,4 +16,4 @@
    -  debug: var=current_working_directory.stdout
 
    - name: save output to a file
-     copy: content="{{ print_output.stdout[0] }}" dest="/etc/ansible/output/{{ inventory_hostname }}.cfg"
+     copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
