@@ -15,8 +15,8 @@
 
 
 - name: Back Up file detail
-#  hosts: all
-#  connection: local
+  hosts: localhost
+  connection: local
   tasks:
    - name: Print Working Directory
      shell: pwd
