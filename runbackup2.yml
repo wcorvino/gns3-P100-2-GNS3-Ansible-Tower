@@ -17,3 +17,11 @@
 
    - name: save output to a file
      copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
+
+   - name: List Files & Directories
+     shell: ls -l
+     register: dir_contents
+   - name: Loop while printing dir contents
+     debug:
+       msg: "{{ item }}"
+     loop: "{{ dir_contents.stdout_lines }}"
