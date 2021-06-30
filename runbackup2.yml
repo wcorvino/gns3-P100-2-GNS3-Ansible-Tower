@@ -10,13 +10,18 @@
      register: print_output
    -  debug: var=print_output.stdout_lines
 
+   - name: save output to a file
+     copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
+
+
+- name: Back Up file detail
+#  hosts: all
+#  connection: local
+  tasks:
    - name: Print Working Directory
      shell: pwd
      register: current_working_directory
    -  debug: var=current_working_directory.stdout
-
-   - name: save output to a file
-     copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
 
    - name: List Files & Directories
      shell: ls -l output
