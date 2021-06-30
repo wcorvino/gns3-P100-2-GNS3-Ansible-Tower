@@ -1,0 +1,21 @@
+#display all containers
+docker ps -a --no-trunc
+
+#
+docker system prune
+
+# launch interactive session to awx container /bin/sh 
+docker run -it ansible/awx:17.1.0 /bin/sh
+
+#ex. session / virt filesystem
+sh-4.4$ pwd
+/usr/bin
+sh-4.4$ ls -l | grep tini
+-rwxr-xr-x 1 root root     24064 Mar  9 16:40 tini
+sh-4.4$ exit
+
+docker ps -a --no-trunc
+
+#
+#?docker system prune to clear idle -it sessions
+#
