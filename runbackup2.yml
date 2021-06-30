@@ -26,4 +26,8 @@
    - name: List Files & Directories
      shell: ls -l output
      register: dir_contents
-   -  debug: var=dir_contents.stdout
+   - name: Loop while printing dir contents
+     debug:
+       msg: "{{ item }}"
+     loop: "{{ dir_contents.stdout_lines }}"
+#  -  debug: var=dir_contents.stdout - rem'd out - using loop instead, to clear line wrap
