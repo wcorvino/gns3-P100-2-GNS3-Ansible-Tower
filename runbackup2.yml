@@ -1,0 +1,33 @@
+---
+- name: Backup show run (IOS) commands)
+  hosts: all
+  connection: local
+  tasks:
+    - name: run enable level commands
+      ios_command:
+        commands:
+          - show run
+      register: print_output
+    -  debug: var=print_output.stdout_lines
+
+    - name: save output to a file
+      copy: content="{{ print_output.stdout[0] }}" dest="./output/{{ inventory_hostname }}.cfg"
+
+
+- name: Back Up file detail
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Print Working Directory
+      shell: pwd
+      register: current_working_directory
+    -  debug: var=current_working_directory.stdout
+
+    - name: List Files & Directories
+      shell: ls -l output
+      register: dir_contents
+    - name: Loop while printing dir contents
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ dir_contents.stdout_lines }}"
+#  -  debug: var=dir_contents.stdout - rem'd out - using loop instead, to clear line wrap
