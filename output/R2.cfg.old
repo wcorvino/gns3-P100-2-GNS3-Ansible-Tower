@@ -1,0 +1,194 @@
+Building configuration...
+
+Current configuration : 4676 bytes
+!
+! Last configuration change at 13:06:11 EDT Fri Jun 25 2021 by cisco
+! NVRAM config last updated at 13:35:15 EDT Fri Jun 25 2021
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$QDsX$W/JhgmnAbIyni4aenBsv0/
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+clock timezone EST -5 0
+clock summer-time EDT recurring
+clock calendar-valid
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name test.net
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username admin privilege 15 password 0 cisco
+username cisco privilege 15 secret 5 $1$pif3$n95ZzpHVEUJfopcwBRmZu/
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 192.168.1.251 255.255.255.255
+!
+interface GigabitEthernet0/0
+ mtu 4000
+ ip address 172.12.1.1 255.255.255.254
+ duplex full
+ speed 1000
+ media-type rj45
+ arp timeout 900
+ hold-queue 4096 in
+ hold-queue 4096 out
+!
+interface GigabitEthernet0/1
+ mtu 8800
+ ip address dhcp
+ duplex half
+ speed 10
+ media-type rj45
+ arp timeout 900
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 1000
+ bgp router-id 192.168.1.251
+ bgp log-neighbor-changes
+ neighbor IBGP peer-group
+ neighbor IBGP remote-as 1000
+ neighbor IBGP next-hop-self
+ neighbor IBGP send-community
+ neighbor IBGP default-originate
+ neighbor 172.12.1.0 peer-group IBGP
+ neighbor 172.12.1.0 description iBGP-peer
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/1 192.168.240.2 name default
+ip route 192.168.1.250 255.255.255.255 GigabitEthernet0/0 172.12.1.0
+ip scp server enable
+!
+ip sla 1
+ udp-echo 10.25.100.1 21 source-ip 192.168.1.251 source-port 40001
+ip sla schedule 1 life forever start-time now
+ip sla 2
+ udp-echo 10.25.100.1 80 source-ip 192.168.1.251 source-port 40002
+ip sla schedule 2 life forever start-time now
+ip sla 3
+ udp-echo 10.25.200.1 21 source-ip 192.168.1.251 source-port 40003
+ip sla schedule 3 life forever start-time now
+ip sla 4
+ udp-echo 10.25.200.1 80 source-ip 192.168.1.251 source-port 40004
+ip sla schedule 4 life forever start-time now
+!
+!
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+ntp update-calendar
+ntp server 87.81.181.2
+!
+end
