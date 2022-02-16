@@ -21,6 +21,9 @@
       shell: pwd
       register: current_working_directory
     -  debug: var=current_working_directory.stdout
+    
+    - name: Change Working Directory
+      shell: cd /var/lib/awx/projects/_8__gns3_test
 
     - name: List Files & Directories
       shell: ls -l output/
